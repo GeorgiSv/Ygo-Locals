@@ -1,0 +1,30 @@
+﻿namespace YgoLocals.Data.Entities
+{
+    using YgoLocals.Data.Entities.Base;
+
+    public class Tournament : BaseDeletableEntity<int>
+    {
+        public Tournament()
+        {
+            Mathces = new List<Match>();
+        }
+
+        public string OrganizerId { get; set; }
+
+        public virtual User Organizer { get; set; }
+
+        public DateTime StartedOn { get; set; }
+
+        public DateTime FinishedOn { get; set; }
+
+        public bool HasStarted { get; set; }
+
+        public bool HasFinished { get; set; }
+
+        public int MaxPlayers { get; set; }
+
+        public IList<User> Players { get; set; }
+
+        public IList<Match> Mathces { get; set; }
+    }
+}
