@@ -7,6 +7,7 @@
         public Tournament()
         {
             Mathces = new List<Match>();
+            Players = new List<TournamentPlayer>();
         }
 
         public string OrganizerId { get; set; }
@@ -23,7 +24,7 @@
 
         public int MaxPlayers { get; set; }
 
-        public IList<User> Players { get; set; }
+        public IList<TournamentPlayer> Players { get; set; }
 
         public IList<Match> Mathces { get; set; }
     }

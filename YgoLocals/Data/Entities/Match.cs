@@ -6,12 +6,12 @@
     public class Match : BaseDeletableEntity<string>
     {
         [Required]
-        public string PlayerrOneId { get; set; }
+        public string PlayerOneId { get; set; }
 
         public User PlayerOne { get; set; }
 
         [Required]
-        public string PlayerrTwoId { get; set; }
+        public string PlayerTwoId { get; set; }
 
         public User PlayerTwo { get; set; }
 
@@ -19,8 +19,8 @@
 
         public User Winner { get; set; }
 
-        public int TournamnetId { get; set; }
+        public int? TournamentId { get; set; }
 
-        public Tournament TournamentId { get; set; }
+        public virtual Tournament? Tournament { get; set; }
     }
 }

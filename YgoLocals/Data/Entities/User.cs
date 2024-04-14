@@ -10,6 +10,7 @@
         {
             Id = Guid.NewGuid().ToString();
             Decks = new List<Deck>();
+            Tournaments = new List<TournamentPlayer>();
         }
 
         public int WinsCount { get; set; }
@@ -24,6 +25,12 @@
 
         public DateTime? DeletedOn { get; set; }
 
-        public IList<Deck> Decks { get; set; }
+        public virtual IList<TournamentPlayer> Tournaments { get; set; }
+
+        public virtual IList<Deck> Decks { get; set; }
+
+        //public virtual ICollection<Match> PlayerOneMatches { get; set; }
+
+        //public virtual ICollection<Match> PlayerTwoMatches { get; set; }
     }
 }
