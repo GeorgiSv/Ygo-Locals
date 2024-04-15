@@ -9,5 +9,9 @@
         public int TournamentId { get; set; }
 
         public virtual Tournament Tournament { get; set; }
+
+        public bool HasPlayed { get; set; }
+
+        public bool HasWin { get; set; }
     }
 }

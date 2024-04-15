@@ -21,6 +21,7 @@
                           {
                               new RoleSeeder(),
                               new UserSeeder(),
+                              new TournamentTypeSeeder(),
                           };
 
             foreach (var seeder in seeders)

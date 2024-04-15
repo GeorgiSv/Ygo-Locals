@@ -24,6 +24,10 @@
 
         public int MaxPlayers { get; set; }
 
+        public int TournamentTypeId { get; set; }
+
+        public TournamentType TournamentType { get; set; }
+
         public IList<TournamentPlayer> Players { get; set; }
 
         public IList<Match> Mathces { get; set; }

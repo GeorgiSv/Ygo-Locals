@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using YgoLocals.Data.Entities.Base;
 
-    public class TournamentType : BaseDeletableEntity<string>
+    public class TournamentType : BaseDeletableEntity<int>
     {
         [Required]
         [MaxLength(100)]

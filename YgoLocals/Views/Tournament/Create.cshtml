@@ -1,0 +1,21 @@
+﻿@model BaseTournamentInputModel
+@{
+    ViewData["Title"] = "Create Tournament";
+}
+
+<form asp-action="Create" asp-controller="Tournament" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="MaxPeopleCount">Max Players Count</label>
+        <input class="form-control" placeholder="Max Players Count" asp-for="MaxPeopleCount">
+        <span asp-validation-for="MaxPeopleCount" class="text-danger"></span>
+
+        <label asp-for="TournamentType">Quiz category</label>
+        <select asp-for="TournamentType" asp-items="@Html.GetEnumSelectList<TournamentTypeEnum>()" class="form-control">
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create quiz</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

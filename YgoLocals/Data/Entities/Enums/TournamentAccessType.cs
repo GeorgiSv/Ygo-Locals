@@ -2,7 +2,7 @@
 {
     public enum TournamentAccessType
     {
-        Public,
-        InvateOnly
+        Public = 0,
+        InvateOnly = 1,
     }
 }

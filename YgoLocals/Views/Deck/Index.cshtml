@@ -1,0 +1,27 @@
+﻿@*@model IList<TournamentViewModel>
+
+@{
+    ViewData["Title"] = "My Decks";
+}
+
+<div class="row">
+
+    <h1 class="display-4">My Decks</h1>
+
+    @foreach (var deck in Model)
+    {
+        <div class="col-sm">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="./images/deck.jpeg" alt="deck">
+                <div class="card-body">
+                    <h5 class="card-title">@deck.Name</h5>
+                    <p class="card-text">Created: @deck.CreatedOn</p>
+                    <p class="card-text">Modified: @deck.ModifiedOn</p>
+                    <a href="#" class="btn btn-primary">Check Cards</a>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+*@

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace YgoLocals.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -73,6 +73,24 @@ namespace YgoLocals.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TournamentType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TournamentType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tournament",
                 columns: table => new
                 {
@@ -84,6 +102,7 @@ namespace YgoLocals.Data.Migrations
                     HasStarted = table.Column<bool>(type: "bit", nullable: false),
                     HasFinished = table.Column<bool>(type: "bit", nullable: false),
                     MaxPlayers = table.Column<int>(type: "int", nullable: false),
+                    TournamentTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -98,23 +117,12 @@ namespace YgoLocals.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TournamentType",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TournamentType", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tournament_TournamentType_TournamentTypeId",
+                        column: x => x.TournamentTypeId,
+                        principalTable: "TournamentType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,7 +172,9 @@ namespace YgoLocals.Data.Migrations
                 columns: table => new
                 {
                     PlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TournamentId = table.Column<int>(type: "int", nullable: false)
+                    TournamentId = table.Column<int>(type: "int", nullable: false),
+                    HasPlayed = table.Column<bool>(type: "bit", nullable: false),
+                    HasWin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,6 +224,11 @@ namespace YgoLocals.Data.Migrations
                 column: "OrganizerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tournament_TournamentTypeId",
+                table: "Tournament",
+                column: "TournamentTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TournamentPlayer_TournamentId",
                 table: "TournamentPlayer",
                 column: "TournamentId");
@@ -231,10 +246,10 @@ namespace YgoLocals.Data.Migrations
                 name: "TournamentPlayer");
 
             migrationBuilder.DropTable(
-                name: "TournamentType");
+                name: "Tournament");
 
             migrationBuilder.DropTable(
-                name: "Tournament");
+                name: "TournamentType");
 
             migrationBuilder.DropColumn(
                 name: "CreatedOn",

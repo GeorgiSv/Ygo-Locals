@@ -6,6 +6,11 @@ namespace YgoLocals.Data.Entities
 
     public class Deck : BaseDeletableEntity<string>
     {
+        public Deck()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [Required]
         [MaxLength(100)]
         public string Name { get; set; }

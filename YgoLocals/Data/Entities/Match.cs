@@ -5,6 +5,11 @@
 
     public class Match : BaseDeletableEntity<string>
     {
+        public Match()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
         [Required]
         public string PlayerOneId { get; set; }
 

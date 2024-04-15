@@ -1,6 +1,5 @@
 ﻿namespace YgoLocals.Data
 {
-    using System.Data.Entity.ModelConfiguration.Conventions;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using YgoLocals.Data.Entities;
@@ -20,6 +19,8 @@
         public DbSet<Tournament> Tournament { get; set; }
 
         public DbSet<TournamentType> TournamentType { get; set; }
+
+        public DbSet<TournamentPlayer> TournamentPlayer { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

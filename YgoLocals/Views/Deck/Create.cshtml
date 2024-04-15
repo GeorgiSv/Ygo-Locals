@@ -1,0 +1,17 @@
+﻿@model DeckInputModel
+@{
+    ViewData["Title"] = "Add Deck";
+}
+
+<form asp-action="Create" asp-controller="Deck" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="Name">Deck name</label>
+        <input class="form-control" placeholder="Enter deck name" asp-for="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create quiz</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

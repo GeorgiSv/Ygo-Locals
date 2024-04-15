@@ -12,14 +12,14 @@ using YgoLocals.Data;
 namespace YgoLocals.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240414083332_Initial")]
-    partial class Initial
+    [Migration("20240415213426_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.29")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -278,9 +278,14 @@ namespace YgoLocals.Data.Migrations
                     b.Property<DateTime>("StartedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("TournamentTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrganizerId");
+
+                    b.HasIndex("TournamentTypeId");
 
                     b.ToTable("Tournament");
                 });
@@ -293,6 +298,12 @@ namespace YgoLocals.Data.Migrations
                     b.Property<int>("TournamentId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("HasPlayed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasWin")
+                        .HasColumnType("bit");
+
                     b.HasKey("PlayerId", "TournamentId");
 
                     b.HasIndex("TournamentId");
@@ -302,8 +313,11 @@ namespace YgoLocals.Data.Migrations
 
             modelBuilder.Entity("YgoLocals.Data.Entities.TournamentType", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -518,7 +532,15 @@ namespace YgoLocals.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("YgoLocals.Data.Entities.TournamentType", "TournamentType")
+                        .WithMany()
+                        .HasForeignKey("TournamentTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Organizer");
+
+                    b.Navigation("TournamentType");
                 });
 
             modelBuilder.Entity("YgoLocals.Data.Entities.TournamentPlayer", b =>
