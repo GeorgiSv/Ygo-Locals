@@ -22,28 +22,18 @@
 
         public DbSet<TournamentPlayer> TournamentPlayer { get; set; }
 
+        public DbSet<TournamentPlayerDeck> TournamentPlayerDeck { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var entityTypes = builder.Model.GetEntityTypes().ToList();
             var foreignKeys = entityTypes
                 .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
+
             foreach (var foreignKey in foreignKeys)
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
-
             }
-
-            //builder.Entity<Match>()
-            //    .HasOne(m => m.PlayerOne)
-            //    .WithMany(t => t.PlayerOneMatches)
-            //    .HasForeignKey(m => m.PlayerOneId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //builder.Entity<Match>()
-            //    .HasOne(m => m.PlayerTwo)
-            //    .WithMany(t => t.PlayerTwoMatches)
-            //    .HasForeignKey(m => m.PlayerTwoId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder
                .Entity<Deck>()
@@ -63,8 +53,12 @@
 
             builder.Entity<TournamentPlayer>(entity =>
             {
-                entity.HasKey(e => new { e.PlayerId, e.TournamentId });
                 entity.HasQueryFilter(t => !t.Tournament.IsDeleted);
+            });
+
+            builder.Entity<TournamentPlayerDeck>(entity =>
+            {
+                entity.HasKey(e => new { e.TournamentPlayerId, e.DeckId });
             });
 
             base.OnModelCreating(builder);
@@ -75,6 +69,7 @@
             ApplyAuditInfoRules();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
+
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             ApplyAuditInfoRules();

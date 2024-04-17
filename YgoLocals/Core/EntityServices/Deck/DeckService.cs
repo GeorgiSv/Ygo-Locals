@@ -79,5 +79,16 @@
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> AreValidDecksPerUser(IList<string> selectedDeckIds, string userId)
+        {
+            var deckIds = await _dbContext.Deck
+            .AsNoTracking()
+            .Where(d => d.UserId == userId)
+            .Select(d => d.Id)
+            .ToListAsync();
+
+            return selectedDeckIds.All(d => deckIds.Contains(d));
+        }
     }
 }

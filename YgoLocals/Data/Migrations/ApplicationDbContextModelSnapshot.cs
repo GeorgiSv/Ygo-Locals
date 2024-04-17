@@ -8,7 +8,7 @@ using YgoLocals.Data;
 
 #nullable disable
 
-namespace YgoLocals.Data.Migrations
+namespace YgoLocals.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -290,11 +290,8 @@ namespace YgoLocals.Data.Migrations
 
             modelBuilder.Entity("YgoLocals.Data.Entities.TournamentPlayer", b =>
                 {
-                    b.Property<string>("PlayerId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("TournamentId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("HasPlayed")
                         .HasColumnType("bit");
@@ -302,11 +299,35 @@ namespace YgoLocals.Data.Migrations
                     b.Property<bool>("HasWin")
                         .HasColumnType("bit");
 
-                    b.HasKey("PlayerId", "TournamentId");
+                    b.Property<string>("PlayerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TournamentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.HasIndex("TournamentId");
 
                     b.ToTable("TournamentPlayer");
+                });
+
+            modelBuilder.Entity("YgoLocals.Data.Entities.TournamentPlayerDeck", b =>
+                {
+                    b.Property<string>("TournamentPlayerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DeckId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("TournamentPlayerId", "DeckId");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("TournamentPlayerDeck");
                 });
 
             modelBuilder.Entity("YgoLocals.Data.Entities.TournamentType", b =>
@@ -319,6 +340,9 @@ namespace YgoLocals.Data.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DecksToPlay")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -560,11 +584,35 @@ namespace YgoLocals.Data.Migrations
                     b.Navigation("Tournament");
                 });
 
+            modelBuilder.Entity("YgoLocals.Data.Entities.TournamentPlayerDeck", b =>
+                {
+                    b.HasOne("YgoLocals.Data.Entities.Deck", "Deck")
+                        .WithMany()
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("YgoLocals.Data.Entities.TournamentPlayer", "TournamentPlayer")
+                        .WithMany("Decks")
+                        .HasForeignKey("TournamentPlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Deck");
+
+                    b.Navigation("TournamentPlayer");
+                });
+
             modelBuilder.Entity("YgoLocals.Data.Entities.Tournament", b =>
                 {
                     b.Navigation("Mathces");
 
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("YgoLocals.Data.Entities.TournamentPlayer", b =>
+                {
+                    b.Navigation("Decks");
                 });
 
             modelBuilder.Entity("YgoLocals.Data.Entities.User", b =>

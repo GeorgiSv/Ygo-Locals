@@ -17,10 +17,14 @@
                     <h5 class="card-title">@tournament.TournamentType.Title</h5>
                     <p class="card-text">Created: @tournament.CreatedOn</p>
                     <p class="card-text">Max Players count: @tournament.MaxPlayers</p>
-                    <a href="#" class="btn btn-primary">Check Tournament</a>
+                    <a class="btn btn-primary" 
+                       asp-area="" 
+                       asp-controller="Tournament" 
+                       asp-action="Details" 
+                       asp-route-id="@tournament.Id">Details
+                    </a>
                 </div>
             </div>
         </div>
-
     }
 </div>

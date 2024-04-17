@@ -7,17 +7,21 @@
     using Microsoft.EntityFrameworkCore;
     using YgoLocals.Models.Tournament;
     using YgoLocals.Infrastructure.Automapper;
+    using YgoLocals.Core.EntityServices.Deck;
+    using YgoLocals.Models.TournamentPlayer;
 
     public class TournamentService : ITournamentService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IDeckService _deckService;
 
-        public TournamentService(ApplicationDbContext dbContext)
+        public TournamentService(ApplicationDbContext dbContext, IDeckService deckService)
         {
             _dbContext = dbContext;
+            _deckService = deckService;
         }
 
-        public async Task<bool> AddPlayerAsync(int tournamentId, string playerId)
+        public async Task<bool> JoinPlayerAsync(int tournamentId, string playerId, IList<string> deckIds)
         {
             var tournament = await _dbContext.Tournament
                 .Where(t => t.Id == tournamentId)
@@ -38,11 +42,25 @@
                 throw new Exception("No more space for players!");
             }
 
+            if (!await _deckService.AreValidDecksPerUser(deckIds, playerId))
+            {
+                Console.WriteLine("Deck/s does not exist in user.");
+                return false;
+            }
+
             var tournamentPlayer = new TournamentPlayer()
             {
                 TournamentId = tournamentId,
                 PlayerId = playerId,
             };
+
+            tournamentPlayer.Decks = deckIds
+                .Select(deckId => new TournamentPlayerDeck
+                {
+                    DeckId = deckId,
+                    TournamentPlayerId = tournamentPlayer.Id,
+                })
+                .ToList();
 
             _dbContext.TournamentPlayer.Add(tournamentPlayer);
             await _dbContext.SaveChangesAsync();
@@ -97,10 +115,24 @@
             .ToListAsync();
 
         public async Task<BaseTournamentViewModel> GetByIdAsync(int id)
-            => await _dbContext.Tournament
-            .AsNoTracking()
-            .To<BaseTournamentViewModel>()
-            .FirstOrDefaultAsync(t => t.Id == id);
+        {
+            var test = await _dbContext.Tournament.ToListAsync();
+
+            var result = await _dbContext
+                .Tournament
+                .AsNoTracking()
+                .To<BaseTournamentViewModel>()
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            result.TournamentPlayer = await _dbContext.
+                TournamentPlayer
+                .AsNoTracking()
+                .Where(tp => tp.TournamentId == id)
+                .To<TournamentPlayerViewModel>()
+                .ToListAsync();
+
+            return result;
+        }
 
         public async Task<int> StartAsync(int tournamentId, string userId)
         {

@@ -20,7 +20,8 @@
             {
                  //Id = (int)TournamentTypeEnum.Classic,
                  Title = "Classic",
-                 Description = "A classic local."
+                 Description = "A classic local.",
+                DecksToPlay = 1,
             };
             tournamentTypeListToSeed.Add(classicTournamentType);
 
@@ -28,7 +29,8 @@
             {
                 //Id = (int)TournamentTypeEnum.TwoDecksMode,
                 Title = "Two Decks Mode",
-                Description = "A local with two decks by every player."
+                Description = "A local with two decks by every player.",
+                DecksToPlay = 2,
             };
             tournamentTypeListToSeed.Add(twoDecksModeTournamentType);
 
@@ -36,11 +38,11 @@
             {
                 //Id = (int)TournamentTypeEnum.Survival,
                 Title = "Survival",
-                Description = "Survival mode with one deck."
+                Description = "Survival mode with one deck.",
+                DecksToPlay = 1,
             };
             tournamentTypeListToSeed.Add(survivalTournamentType);
-
-
+            
             foreach (var toutnamentType in tournamentTypeListToSeed)
             {
                 dbContext.TournamentType.Add(toutnamentType);

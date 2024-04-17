@@ -12,5 +12,9 @@
         [Required]
         [MaxLength(1000)]
         public string Description { get; set; }
+
+        [Required]
+        [Range(1,3)]
+        public int DecksToPlay { get; set; }
     }
 }

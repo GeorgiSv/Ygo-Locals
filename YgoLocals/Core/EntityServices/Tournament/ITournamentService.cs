@@ -8,7 +8,7 @@
 
         Task<int> CreateAsync(string organizerId, int maxPeopleCount, int tournamentTypeId);
 
-        Task<bool> AddPlayerAsync(int tournamentId, string playerId);
+        Task<bool> JoinPlayerAsync(int tournamentId, string playerId, IList<string> deckIds);
 
         Task<IList<BaseTournamentViewModel>> GetAllAvaiableToJoinAsync();
 

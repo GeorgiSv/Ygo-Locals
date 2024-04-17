@@ -2,8 +2,8 @@
 {
     public enum TournamentTypeEnum
     {
-        Classic = 3,
-        TwoDecksMode = 4,
-        Survival = 5,
+        Classic = 1,
+        TwoDecksMode = 2,
+        Survival = 3,
     }
 }

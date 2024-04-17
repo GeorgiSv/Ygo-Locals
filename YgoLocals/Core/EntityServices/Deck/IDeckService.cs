@@ -12,5 +12,7 @@
         Task<IList<DeckViewModel>> GetAllByUserAsync(string userId);
 
         Task AddCardsAsync(IList<string> cardNames);
+
+        Task<bool> AreValidDecksPerUser(IList<string> deckIds, string userId);
     }
 }

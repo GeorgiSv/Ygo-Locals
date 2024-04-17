@@ -1,0 +1,30 @@
+﻿@model JoinViewModel
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "Joining Tournament";
+}
+
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Joining in: @Model.Tournament.TournamentType.Title-@Model.Tournament.Id</h5>
+
+        <form asp-controller="Tournament" asp-action="Join">
+
+            @for (int i = 0; i < Model.Tournament.TournamentType.DecksToPlay; i++)
+            {
+                @Html.DropDownListFor(x => x.SelectedDeckId, Model.Decks, "Select Deck", new { @class = "custom-select" })
+            }
+
+            <input type="hidden" asp-for="@Model.TournamentId" value="@Model.TournamentId" />
+
+            <button type="submit" class="btn btn-primary">Join</button>
+        </form>
+    </div>
+</div>

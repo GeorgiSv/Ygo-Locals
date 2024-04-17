@@ -5,6 +5,8 @@
 
     public class DeckViewModel : IMapFrom<Deck>
     {
+        public string Id { get; set; }
+
         public string Name { get; set; }
 
         public User User { get; set; }
