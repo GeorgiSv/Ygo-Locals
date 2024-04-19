@@ -274,6 +274,10 @@ namespace YgoLocals.Migrations
                     b.Property<bool>("HasStarted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("IdlePlayerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -294,6 +298,8 @@ namespace YgoLocals.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdlePlayerId");
 
                     b.HasIndex("OrganizerId");
 
@@ -319,7 +325,13 @@ namespace YgoLocals.Migrations
                     b.Property<bool>("HasWin")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIdle")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
@@ -348,6 +360,9 @@ namespace YgoLocals.Migrations
 
                     b.Property<string>("DeckId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("TournamentPlayerId", "DeckId");
 
@@ -586,6 +601,12 @@ namespace YgoLocals.Migrations
 
             modelBuilder.Entity("YgoLocals.Data.Entities.Tournament", b =>
                 {
+                    b.HasOne("YgoLocals.Data.Entities.TournamentPlayer", "IdlePlayer")
+                        .WithMany()
+                        .HasForeignKey("IdlePlayerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("YgoLocals.Data.Entities.User", "Organizer")
                         .WithMany()
                         .HasForeignKey("OrganizerId")
@@ -597,6 +618,8 @@ namespace YgoLocals.Migrations
                         .HasForeignKey("TournamentTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("IdlePlayer");
 
                     b.Navigation("Organizer");
 
@@ -614,7 +637,7 @@ namespace YgoLocals.Migrations
                     b.HasOne("YgoLocals.Data.Entities.Tournament", "Tournament")
                         .WithMany("Players")
                         .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Player");

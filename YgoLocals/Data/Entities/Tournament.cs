@@ -1,5 +1,6 @@
 ﻿namespace YgoLocals.Data.Entities
 {
+    using System.ComponentModel.DataAnnotations.Schema;
     using YgoLocals.Data.Entities.Base;
 
     public class Tournament : BaseDeletableEntity<int>
@@ -28,6 +29,7 @@
 
         public TournamentType TournamentType { get; set; }
 
+        [ForeignKey("IdlePlayer")]
         public string IdlePlayerId { get; set; }
 
         public virtual TournamentPlayer IdlePlayer { get; set; }

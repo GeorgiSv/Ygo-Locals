@@ -203,6 +203,56 @@ namespace YgoLocals.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Match",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PlayerOneId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PlayerOneDeckId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PlayerTwoId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PlayerTwoDeckId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PlayerTwoeDeckId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    WinnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    TournamentId = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Match", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Match_AspNetUsers_PlayerOneId",
+                        column: x => x.PlayerOneId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Match_AspNetUsers_PlayerTwoId",
+                        column: x => x.PlayerTwoId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Match_AspNetUsers_WinnerId",
+                        column: x => x.WinnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Match_Deck_PlayerOneDeckId",
+                        column: x => x.PlayerOneDeckId,
+                        principalTable: "Deck",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Match_Deck_PlayerTwoeDeckId",
+                        column: x => x.PlayerTwoeDeckId,
+                        principalTable: "Deck",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tournament",
                 columns: table => new
                 {
@@ -215,6 +265,7 @@ namespace YgoLocals.Migrations
                     HasFinished = table.Column<bool>(type: "bit", nullable: false),
                     MaxPlayers = table.Column<int>(type: "int", nullable: false),
                     TournamentTypeId = table.Column<int>(type: "int", nullable: false),
+                    IdlePlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -238,48 +289,6 @@ namespace YgoLocals.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Match",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PlayerOneId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PlayerTwoId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    WinnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TournamentId = table.Column<int>(type: "int", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Match", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Match_AspNetUsers_PlayerOneId",
-                        column: x => x.PlayerOneId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Match_AspNetUsers_PlayerTwoId",
-                        column: x => x.PlayerTwoId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Match_AspNetUsers_WinnerId",
-                        column: x => x.WinnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Match_Tournament_TournamentId",
-                        column: x => x.TournamentId,
-                        principalTable: "Tournament",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TournamentPlayer",
                 columns: table => new
                 {
@@ -287,7 +296,13 @@ namespace YgoLocals.Migrations
                     PlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TournamentId = table.Column<int>(type: "int", nullable: false),
                     HasPlayed = table.Column<bool>(type: "bit", nullable: false),
-                    HasWin = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsIdle = table.Column<bool>(type: "bit", nullable: false),
+                    HasWin = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -303,7 +318,7 @@ namespace YgoLocals.Migrations
                         column: x => x.TournamentId,
                         principalTable: "Tournament",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -311,7 +326,8 @@ namespace YgoLocals.Migrations
                 columns: table => new
                 {
                     TournamentPlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DeckId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    DeckId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -375,9 +391,19 @@ namespace YgoLocals.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Match_PlayerOneDeckId",
+                table: "Match",
+                column: "PlayerOneDeckId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Match_PlayerOneId",
                 table: "Match",
                 column: "PlayerOneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Match_PlayerTwoeDeckId",
+                table: "Match",
+                column: "PlayerTwoeDeckId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Match_PlayerTwoId",
@@ -393,6 +419,11 @@ namespace YgoLocals.Migrations
                 name: "IX_Match_WinnerId",
                 table: "Match",
                 column: "WinnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tournament_IdlePlayerId",
+                table: "Tournament",
+                column: "IdlePlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tournament_OrganizerId",
@@ -418,10 +449,37 @@ namespace YgoLocals.Migrations
                 name: "IX_TournamentPlayerDeck_DeckId",
                 table: "TournamentPlayerDeck",
                 column: "DeckId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Match_Tournament_TournamentId",
+                table: "Match",
+                column: "TournamentId",
+                principalTable: "Tournament",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Tournament_TournamentPlayer_IdlePlayerId",
+                table: "Tournament",
+                column: "IdlePlayerId",
+                principalTable: "TournamentPlayer",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Tournament_AspNetUsers_OrganizerId",
+                table: "Tournament");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_TournamentPlayer_AspNetUsers_PlayerId",
+                table: "TournamentPlayer");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_TournamentPlayer_Tournament_TournamentId",
+                table: "TournamentPlayer");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -450,13 +508,13 @@ namespace YgoLocals.Migrations
                 name: "Deck");
 
             migrationBuilder.DropTable(
-                name: "TournamentPlayer");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Tournament");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "TournamentPlayer");
 
             migrationBuilder.DropTable(
                 name: "TournamentType");
