@@ -23,7 +23,7 @@
             var baseMatchViewModel = new BaseMatchViewModel()
             {
                 AvaiableToJoin = await _matchService.GetAllAvaiable(),
-                UserActiveMatches = await _matchService.GetAllByUser(_userManager.GetUserId(User)),
+                UserActiveMatches = await _matchService.GetAllActiveByUser(_userManager.GetUserId(User)),
             };
 
             return View(baseMatchViewModel);
@@ -55,6 +55,12 @@
         {
             await _matchService.EndAsync(input.MatchId, input.WinnerId);
             return RedirectToAction(nameof(Details), new { id = input.MatchId });
+        }
+
+        public async Task<IActionResult> PastMatches()
+        {
+            var matches = await _matchService.GetAllPastByUser(_userManager.GetUserId(User));
+            return View(matches);
         }
     }
 }

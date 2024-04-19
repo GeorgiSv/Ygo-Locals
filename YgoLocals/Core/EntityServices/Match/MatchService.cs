@@ -48,10 +48,10 @@
             return match.Id;
         }
 
-        public async Task<IList<MatchViewModel>> GetAllByUser(string userId)
+        public async Task<IList<MatchViewModel>> GetAllActiveByUser(string userId)
             => await _dbContext.Match
-            .Where(m => m.PlayerOneId == userId || m.PlayerTwoId == userId)
             .AsNoTracking()
+            .Where(m => (m.PlayerOneId == userId || m.PlayerTwoId == userId) && m.WinnerId == null)
             .To<MatchViewModel>()
             .ToListAsync();
 
@@ -112,5 +112,13 @@
             .AsNoTracking()
             .To<MatchViewModel>()
             .ToListAsync();
+
+        public async Task<IList<MatchViewModel>> GetAllPastByUser(string userId)
+          => await _dbContext.Match
+            .AsNoTracking()
+            .Where(m => (m.PlayerOneId == userId || m.PlayerTwoId == userId) && m.WinnerId != null)
+            .To<MatchViewModel>()
+            .ToListAsync();
+
     }
 }

@@ -15,6 +15,8 @@
 
         Task<string> EndAsync(string matchId, string winnerId);
 
-        Task<IList<MatchViewModel>> GetAllByUser(string userId);
+        Task<IList<MatchViewModel>> GetAllActiveByUser(string userId);
+
+        Task<IList<MatchViewModel>> GetAllPastByUser(string userId);
     }
 }

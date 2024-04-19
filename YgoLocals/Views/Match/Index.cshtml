@@ -6,13 +6,25 @@
 
 <h1 class="display-4">My Matches</h1>
 
-<form asp-controller="Match" asp-action="Create">
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
+<div class="row">
+    <div class="col">
+        <form asp-controller="Match" asp-action="Create">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+    <div class="col">
+        <a class="btn btn-primary"
+           asp-controller="Match"
+           asp-action="PastMatches">
+            PastMatches
+        </a>
+    </div>
+</div>
 
-<partial name="_MatchCollectionPartial" model="@Model.UserActiveMatches"/>
+<partial name="_MatchCollectionPartial" model="@Model.UserActiveMatches" />
 
 <hr />
+
 <h1 class="display-4">Avaiable Matches</h1>
-<partial name="_MatchCollectionPartial" model="@Model.AvaiableToJoin"/>
+<partial name="_MatchCollectionPartial" model="@Model.AvaiableToJoin" />
 

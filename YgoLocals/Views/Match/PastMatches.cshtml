@@ -1,0 +1,8 @@
+﻿@model IList<MatchViewModel>
+@{
+    ViewData["Title"] = "My Past Matches";
+}
+
+<h1 class="display-4">My Past Matches</h1>
+
+<partial name="_MatchCollectionPartial" model="@Model" />
