@@ -1,0 +1,43 @@
+﻿@model IList<MatchViewModel>
+@inject UserManager<User> UserManager
+
+<div class="row">
+    @if (!Model.Any())
+    {
+        <h5 class="card-title">No avaiable matches to join</h5>
+    }
+    else
+    {
+        @foreach (var match in Model)
+        {
+            <div class="col-sm">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">PlayerOne: @match.PlayerOne.UserName</h5>
+                        <p class="card-text">Created: @match.CreatedOn</p>
+
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn btn-primary"
+                           asp-controller="Match"
+                           asp-action="Details"
+                           asp-route-id="@match.Id">
+                                    Details
+                                </a>
+                            </div>
+                            <div class="col">
+                                @if (match.PlayerOneId != UserManager.GetUserId(User))
+                                {
+                                    <form asp-controller="Match" asp-action="Join" method="post">
+                                        <input type="hidden" name="id" value="@match.Id" />
+                                        <button type="submit" class="btn btn-primary">Join</button>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

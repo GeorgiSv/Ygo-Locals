@@ -25,6 +25,7 @@
         {
             var tournament = await _dbContext.Tournament
                 .Where(t => t.Id == tournamentId)
+                .Include(t => t.Players)
                 .FirstOrDefaultAsync();
 
             if (tournament is null)
@@ -37,7 +38,7 @@
                 throw new Exception("Tournament has already started yet!");
             }
 
-            if (tournament.MaxPlayers >= tournament.Players.Count)
+            if (tournament.MaxPlayers <= tournament.Players.Count)
             {
                 throw new Exception("No more space for players!");
             }

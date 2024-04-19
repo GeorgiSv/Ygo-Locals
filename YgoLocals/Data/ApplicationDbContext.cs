@@ -35,17 +35,32 @@
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            builder
-               .Entity<Deck>()
-               .HasQueryFilter(c => !c.IsDeleted);
+            builder.Entity<User>(entity =>
+            {
+                entity
+                .HasMany(u => u.Decks)
+                .WithOne(d => d.User);
+
+                entity.HasQueryFilter(c => !c.IsDeleted);
+            });
+
+            builder.Entity<Deck>(entity =>
+            {
+                entity.HasQueryFilter(c => !c.IsDeleted);
+            });
 
             builder
              .Entity<Match>()
              .HasQueryFilter(c => !c.IsDeleted);
 
-            builder
-             .Entity<Tournament>()
-             .HasQueryFilter(c => !c.IsDeleted);
+            builder.Entity<Tournament>(entity =>
+            {
+                entity
+                .HasMany(t => t.Players)
+                .WithOne(t => t.Tournament);
+
+                entity.HasQueryFilter(c => !c.IsDeleted);
+            });
 
             builder
              .Entity<TournamentType>()

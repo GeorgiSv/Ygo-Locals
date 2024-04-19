@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using YgoLocals;
 using YgoLocals.Core.Email;
 using YgoLocals.Core.EntityServices.Deck;
+using YgoLocals.Core.EntityServices.Match;
 using YgoLocals.Core.EntityServices.Tournament;
 using YgoLocals.Data;
 using YgoLocals.Data.Entities;
@@ -28,6 +29,7 @@ builder.Services
 
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IDeckService, DeckService>();
+builder.Services.AddTransient<IMatchService, MatchService>();
 builder.Services.AddTransient<ITournamentService, TournamentService>();
 
 builder.Services.AddControllersWithViews();

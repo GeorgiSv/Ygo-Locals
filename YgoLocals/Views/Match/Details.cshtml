@@ -1,0 +1,114 @@
+﻿@model MatchViewModel
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "Match Details";
+}
+
+@*<div class="jumbotron">*@
+<div>
+    <h1 class="display-4">Matches</h1>
+    <hr class="my-4">
+
+    @if (@Model.Winner is not null)
+    {
+        <h2>Ended</h2>
+    }
+    else if (@Model.PlayerTwo is not null)
+    {
+        <h2>In Play</h2>
+    }
+    else
+    {
+        <h2>Waiting</h2>
+    }
+
+    <div class="row">
+        <div class="col">
+            <h4 class="lead">PlayerOne: @Model.PlayerOne.UserName</h4>
+        </div>
+        <div class="col">
+            @if (@Model.PlayerTwo is not null)
+            {
+                <h4 class="lead">PlayerTwo: @Model.PlayerTwo.UserName</h4>
+            }
+            else
+            {
+                <h4 class="lead"><i>Waiting player to join..</i></h4>
+            }
+        </div>
+    </div>
+
+    @if (@Model.Winner is not null)
+    {
+        <h2>Winner: @Model.Winner.UserName</h2>
+    }
+    else if (Model.PlayerOneId != UserManager.GetUserId(User) && @Model.PlayerTwo is null)
+    {
+        <form asp-controller="Match" asp-action="Join">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-success">Join</button>
+        </form>
+    }
+    else if (@Model.PlayerTwo is not null)
+    {
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+            End Match
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form asp-controller="Match" asp-action="End">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">End match</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" aria-label="Radio button for following text input" name="selectedOption" value="@Model.PlayerOneId" onclick="updateHiddenField('@Model.PlayerOneId')">
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Text input with radio button" disabled value="@Model.PlayerOne.UserName">
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" aria-label="Radio button for following text input" name="selectedOption" value="@Model.PlayerTwoId" onclick="updateHiddenField('@Model.PlayerTwoId')">
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Text input with radio button" disabled value="@Model.PlayerTwo.UserName">
+                            </div>
+
+                            <input type="hidden" id="winnerId" name="winnerId" />
+                            <input type="hidden" name="matchId" value="@Model.Id" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger">End</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    function updateHiddenField(value) {
+        document.getElementById("winnerId").value = value;
+    }
+
+    @*    $('#myModal').on('shown.bs.modal', function() {
+        $('#myInput').trigger('focus')
+        })*@
+</script>

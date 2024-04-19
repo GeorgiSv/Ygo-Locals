@@ -1,0 +1,18 @@
+﻿@model BaseMatchViewModel
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "Matches";
+}
+
+<h1 class="display-4">My Matches</h1>
+
+<form asp-controller="Match" asp-action="Create">
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<partial name="_MatchCollectionPartial" model="@Model.UserActiveMatches"/>
+
+<hr />
+<h1 class="display-4">Avaiable Matches</h1>
+<partial name="_MatchCollectionPartial" model="@Model.AvaiableToJoin"/>
+

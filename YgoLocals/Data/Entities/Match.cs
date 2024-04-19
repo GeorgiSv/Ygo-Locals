@@ -15,12 +15,11 @@
 
         public User PlayerOne { get; set; }
 
-        [Required]
-        public string PlayerTwoId { get; set; }
+        public string? PlayerTwoId { get; set; }
 
         public User PlayerTwo { get; set; }
 
-        public string WinnerId { get; set; }
+        public string? WinnerId { get; set; }
 
         public User Winner { get; set; }
 

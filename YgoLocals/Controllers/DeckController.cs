@@ -32,6 +32,11 @@
         [HttpPost]
         public async Task<IActionResult> Create(DeckInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
             var deckId = await _deckService.CreateAsync(_userManager.GetUserId(User), input.Name);
 
             return RedirectToAction(nameof(Index));

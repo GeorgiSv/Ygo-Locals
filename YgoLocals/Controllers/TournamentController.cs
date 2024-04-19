@@ -36,6 +36,11 @@
         [HttpPost]
         public async Task<IActionResult> Create(BaseTournamentInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
             var tournamentId = await _tournamentService
                 .CreateAsync(_userManager.GetUserId(User),
                 input.MaxPeopleCount,
@@ -53,6 +58,11 @@
         [HttpPost]
         public async Task<IActionResult> Start(int id)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
             var tournamentId = await _tournamentService.StartAsync(id, _userManager.GetUserId(User));
             return RedirectToAction(nameof(Details), new { id = tournamentId });
         }
@@ -75,6 +85,11 @@
         [HttpPost]
         public async Task<IActionResult> Join(JoinInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
             await _tournamentService.JoinPlayerAsync(input.TournamentId, _userManager.GetUserId(User), input.SelectedDeckId);
 
             return RedirectToAction(nameof(Details), new { id = input.TournamentId });

@@ -1,17 +1,14 @@
 ﻿namespace YgoLocals.Data.Entities
 {
-    using System.ComponentModel.DataAnnotations;
+    using YgoLocals.Data.Entities.Base;
 
-    public class TournamentPlayer
+    public class TournamentPlayer : BaseDeletableEntity<string>
     {
         public TournamentPlayer()
         {
             Id = Guid.NewGuid().ToString();
             Decks = new List<TournamentPlayerDeck>();
         }
-
-        [Key]
-        public string Id { get; set; }
 
         public string PlayerId { get; set; }
 
