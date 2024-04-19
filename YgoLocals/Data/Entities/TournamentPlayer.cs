@@ -20,6 +20,8 @@
 
         public bool HasPlayed { get; set; }
 
+        public bool IsActive { get; set; }
+
         public bool HasWin { get; set; }
 
         public IList<TournamentPlayerDeck> Decks { get; set; }

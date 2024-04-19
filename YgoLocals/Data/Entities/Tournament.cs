@@ -28,6 +28,10 @@
 
         public TournamentType TournamentType { get; set; }
 
+        public string IdlePlayerId { get; set; }
+
+        public virtual TournamentPlayer IdlePlayer { get; set; }
+
         public IList<TournamentPlayer> Players { get; set; }
 
         public IList<Match> Mathces { get; set; }

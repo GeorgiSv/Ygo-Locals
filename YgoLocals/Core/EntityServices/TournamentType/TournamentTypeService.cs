@@ -62,5 +62,6 @@
 
         public async Task<TournamentType> GetByIdAsync(int id)
             => await _dbContext.TournamentType.FirstOrDefaultAsync(tt => tt.Id == id);
+
     }
 }

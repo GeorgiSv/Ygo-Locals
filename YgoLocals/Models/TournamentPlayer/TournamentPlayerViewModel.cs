@@ -16,6 +16,8 @@
 
         public bool HasWin { get; set; }
 
+        public bool IsActive { get; set; }
+
         public IList<TournamentPlayerDeckViewModel> Decks { get; set; }
     }
 }

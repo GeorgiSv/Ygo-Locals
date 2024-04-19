@@ -11,7 +11,7 @@
 
         Task JoinAsync(string matchId, string playerTwo);
 
-        Task<string> StartAsync(string playerOneId, string playerTwoId, int? tournamentId);
+        Task StartFromTournamentAsync(IList<Match> matches);
 
         Task<string> EndAsync(string matchId, string winnerId);
 

@@ -6,6 +6,7 @@
 
     using YgoLocals.Core.EntityServices.Deck;
     using YgoLocals.Core.EntityServices.Tournament;
+    using YgoLocals.Core.ProcessorServices;
     using YgoLocals.Data.Entities;
     using YgoLocals.Models.Tournament;
 
@@ -14,12 +15,18 @@
         private readonly UserManager<User> _userManager;
         private readonly ITournamentService _tournamentService;
         private readonly IDeckService _deckService;
+        private readonly TournamentProcessorService _tournamentProcessorService;
 
-        public TournamentController(UserManager<User> userManager, ITournamentService tournamentService, IDeckService deckService)
+        public TournamentController(
+            UserManager<User> userManager, 
+            ITournamentService tournamentService, 
+            IDeckService deckService,
+            TournamentProcessorService tournamentProcessorService)
         {
             _userManager = userManager;
             _tournamentService = tournamentService;
             _deckService = deckService;
+            _tournamentProcessorService = tournamentProcessorService;
         }
 
         public async Task<IActionResult> Index()
@@ -63,8 +70,11 @@
                 return this.View();
             }
 
-            var tournamentId = await _tournamentService.StartAsync(id, _userManager.GetUserId(User));
-            return RedirectToAction(nameof(Details), new { id = tournamentId });
+            var tournament = await _tournamentService.StartAsync(id, _userManager.GetUserId(User));
+
+            await _tournamentProcessorService.ProcessMatchesStart(tournament);
+
+            return RedirectToAction(nameof(Details), new { id = tournament.Id });
         }
 
         public async Task<IActionResult> Join(int id)

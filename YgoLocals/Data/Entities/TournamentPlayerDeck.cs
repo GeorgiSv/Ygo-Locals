@@ -9,5 +9,7 @@
         public string DeckId { get; set; }
 
         public virtual Deck Deck { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

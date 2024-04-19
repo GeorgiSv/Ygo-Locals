@@ -53,6 +53,7 @@
             {
                 TournamentId = tournamentId,
                 PlayerId = playerId,
+                IsActive = true,
             };
 
             tournamentPlayer.Decks = deckIds
@@ -60,6 +61,7 @@
                 {
                     DeckId = deckId,
                     TournamentPlayerId = tournamentPlayer.Id,
+                    IsActive = true,
                 })
                 .ToList();
 
@@ -135,9 +137,11 @@
             return result;
         }
 
-        public async Task<int> StartAsync(int tournamentId, string userId)
+        public async Task<Tournament> StartAsync(int tournamentId, string userId)
         {
-            var tournament = await GetByIdAndUSer(tournamentId, userId).FirstOrDefaultAsync();
+            var tournament = await GetByIdAndUser(tournamentId, userId)
+                .Include(t => t.Players)
+                .FirstOrDefaultAsync();
 
             if (tournament is null)
             {
@@ -147,10 +151,19 @@
             tournament.HasStarted = true;
             await _dbContext.SaveChangesAsync();
 
-            return tournament.Id;
+            return tournament;
         }
 
-        private IQueryable<Tournament> GetByIdAndUSer(int tournamentId, string userId)
+        public async Task SetIdlePlayerAsync(Tournament tournament, string playerId)
+        {
+            tournament.IdlePlayerId = playerId;
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Tournament> GetEntityById(int tournamentId)
+             => await _dbContext.Tournament.FirstOrDefaultAsync(t => t.Id == tournamentId);
+
+        private IQueryable<Tournament> GetByIdAndUser(int tournamentId, string userId)
             => _dbContext.Tournament
             .Where(t => t.OrganizerId == userId && t.Id == tournamentId);
     }

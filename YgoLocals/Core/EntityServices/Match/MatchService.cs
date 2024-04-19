@@ -17,20 +17,39 @@
             _dbContext = dbContext;
         }
 
-        public async Task<string> StartAsync(string playerOneId, string playerTwoId, int? tournamentId = null)
+        public async Task StartFromTournamentAsync(IList<Match> matches)
         {
-            var match = new Match()
-            {
-                PlayerOneId = playerOneId,
-                PlayerTwoId = playerTwoId,
-                TournamentId = tournamentId,
-            };
+            _dbContext.Match.AddRange(matches);
+            await _dbContext.SaveChangesAsync();
+        }
 
-            _dbContext.Match.Add(match);
+        public async Task<string> EndFromTournamentAsync(string matchId, string winnerId, string looserId)
+        {
+            var match = await _dbContext.Match
+                .FirstOrDefaultAsync(m => m.Id == matchId);
+
+            var looser = await _dbContext.TournamentPlayer
+                .FirstOrDefaultAsync(u => u.Id == looserId);
+
+            var deck = looser.Decks.FirstOrDefault(d => d.IsActive);
+            deck.IsActive = false;
+
+            if (!looser.Decks.Any(d => d.IsActive))
+            {
+                looser.IsActive = false;
+            }
+
+            if (match is null)
+            {
+                throw new Exception("Match was not found in the database!");
+            }
+
+            match.WinnerId = winnerId;
             await _dbContext.SaveChangesAsync();
 
             return match.Id;
         }
+
 
         public async Task<string> EndAsync(string matchId, string winnerId)
         {

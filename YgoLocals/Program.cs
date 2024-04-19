@@ -6,6 +6,8 @@ using YgoLocals.Core.Email;
 using YgoLocals.Core.EntityServices.Deck;
 using YgoLocals.Core.EntityServices.Match;
 using YgoLocals.Core.EntityServices.Tournament;
+using YgoLocals.Core.EntityServices.TournamentPlayer;
+using YgoLocals.Core.ProcessorServices;
 using YgoLocals.Data;
 using YgoLocals.Data.Entities;
 using YgoLocals.Infrastructure.Automapper;
@@ -31,6 +33,8 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IDeckService, DeckService>();
 builder.Services.AddTransient<IMatchService, MatchService>();
 builder.Services.AddTransient<ITournamentService, TournamentService>();
+builder.Services.AddTransient<ITournamentPlayerService, TournamentPlayerService>();
+builder.Services.AddTransient<TournamentProcessorService>();
 
 builder.Services.AddControllersWithViews();
 
