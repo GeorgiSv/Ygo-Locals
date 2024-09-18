@@ -16,13 +16,13 @@
 
         public DbSet<Match> Match { get; set; }
 
-        public DbSet<Tournament> Tournament { get; set; }
+        // public DbSet<Tournament> Tournament { get; set; }
 
-        public DbSet<TournamentType> TournamentType { get; set; }
+        // public DbSet<TournamentType> TournamentType { get; set; }
 
-        public DbSet<TournamentPlayer> TournamentPlayer { get; set; }
+        // public DbSet<TournamentPlayer> TournamentPlayer { get; set; }
 
-        public DbSet<TournamentPlayerDeck> TournamentPlayerDeck { get; set; }
+        // public DbSet<TournamentPlayerDeck> TournamentPlayerDeck { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -53,28 +53,28 @@
              .Entity<Match>()
              .HasQueryFilter(c => !c.IsDeleted);
 
-            builder.Entity<Tournament>(entity =>
-            {
-                entity
-                .HasMany(t => t.Players)
-                .WithOne(t => t.Tournament);
+            // builder.Entity<Tournament>(entity =>
+            // {
+            //     entity
+            //     .HasMany(t => t.Players)
+            //     .WithOne(t => t.Tournament);
 
-                entity.HasQueryFilter(c => !c.IsDeleted);
-            });
+            //     entity.HasQueryFilter(c => !c.IsDeleted);
+            // });
 
-            builder
-             .Entity<TournamentType>()
-             .HasQueryFilter(c => !c.IsDeleted);
+            // builder
+            //  .Entity<TournamentType>()
+            //  .HasQueryFilter(c => !c.IsDeleted);
 
-            builder.Entity<TournamentPlayer>(entity =>
-            {
-                entity.HasQueryFilter(t => !t.Tournament.IsDeleted);
-            });
+            // builder.Entity<TournamentPlayer>(entity =>
+            // {
+            //     entity.HasQueryFilter(t => !t.Tournament.IsDeleted);
+            // });
 
-            builder.Entity<TournamentPlayerDeck>(entity =>
-            {
-                entity.HasKey(e => new { e.TournamentPlayerId, e.DeckId });
-            });
+            // builder.Entity<TournamentPlayerDeck>(entity =>
+            // {
+            //     entity.HasKey(e => new { e.TournamentPlayerId, e.DeckId });
+            // });
 
             base.OnModelCreating(builder);
         }

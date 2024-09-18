@@ -28,16 +28,16 @@
             var match = await _dbContext.Match
                 .FirstOrDefaultAsync(m => m.Id == matchId);
 
-            var looser = await _dbContext.TournamentPlayer
-                .FirstOrDefaultAsync(u => u.Id == looserId);
+            // var looser = await _dbContext.TournamentPlayer
+            //     .FirstOrDefaultAsync(u => u.Id == looserId);
 
-            var deck = looser.Decks.FirstOrDefault(d => d.IsActive);
-            deck.IsActive = false;
+            // var deck = looser.Decks.FirstOrDefault(d => d.IsActive);
+            // deck.IsActive = false;
 
-            if (!looser.Decks.Any(d => d.IsActive))
-            {
-                looser.IsActive = false;
-            }
+            // if (!looser.Decks.Any(d => d.IsActive))
+            // {
+            //     looser.IsActive = false;
+            // }
 
             if (match is null)
             {

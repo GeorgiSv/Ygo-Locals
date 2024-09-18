@@ -33,6 +33,6 @@
 
         public int? TournamentId { get; set; }
 
-        public virtual Tournament? Tournament { get; set; }
+        //public virtual Tournament? Tournament { get; set; }
     }
 }
