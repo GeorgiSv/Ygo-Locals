@@ -1,17 +1,17 @@
-﻿@model IList<BaseTournamentViewModel>
+﻿@* @model IList<BaseTournamentViewModel>
 
 @{
     ViewData["Title"] = "Tournaments";
 }
 
-<h1 class="display-4">Avaiable Tournaments</h1>
-
+<h1 class="display-4">Avaiable Tournaments</h1> *@
+@* 
 <div class="row">
     @foreach (var tournament in Model)
     {
         <div class="col-sm">
             <div class="card" style="width: 18rem;">
-                @*<img class="card-img-top" src="./images/deck.jpeg" alt="deck">*@
+                @*<img class="card-img-top" src="./images/deck.jpeg" alt="deck">
                 <div class="card-body">
                     <h5 class="card-title">@tournament.TournamentType.Title</h5>
                     <p class="card-text">Created: @tournament.CreatedOn</p>
@@ -26,4 +26,4 @@
             </div>
         </div>
     }
-</div>
+</div> *@
